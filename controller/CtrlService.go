@@ -33,7 +33,7 @@ func NewCtrlService(uc usc.UsecaseInterface, ud string) *CtrlService {
 	}
 }
 
-func (cs *CtrlService) GetEvents(ctx context.Context, req *GetEventsRequest) (*GetEventsResponse, error) {
+func (cs *CtrlService) GetEvents(ctx context.Context, req *GetEventsRequestCalendar) (*GetEventsResponse, error) {
 	srv, err := cs.uc.GetCalendarServiceClient()
 	if err != nil {
 		log.Println("Unable to retrieve calendar Client: ", err)
@@ -65,21 +65,23 @@ func (cs *CtrlService) GetEvents(ctx context.Context, req *GetEventsRequest) (*G
 				return nil, e.StacktraceError(err)
 			}
 		}
-
-		time1, err := time.Parse(time.RFC3339, item.Start.DateTime)
-		if err != nil {
-			log.Println("Error while parsing date :", err)
-			return nil, e.StacktraceError(err)
-		}
-		time2, err := time.Parse(time.RFC3339, item.End.DateTime)
-		if err != nil {
-			log.Println("Error while parsing date :", err)
-			return nil, e.StacktraceError(err)
-		}
+		// log.Println(item.Start.DateTime)
+		// time1, err := time.Parse(time.RFC3339, item.Start.DateTime)
+		// if err != nil {
+		// 	log.Println("Error while parsing date :", err)
+		// 	return nil, e.StacktraceError(err)
+		// }
+		// time2, err := time.Parse(time.RFC3339, item.End.DateTime)
+		// if err != nil {
+		// 	log.Println("Error while parsing date :", err)
+		// 	return nil, e.StacktraceError(err)
+		// }
 		// tmp := model.CalendarEvent{Title: item.Summary, Description: item.Description,
 		// 	StartDate: time1, EndDate: time2, ClassID: classID, ID: item.Id}
+		// tmp := EventData{Title: item.Summary, Description: item.Description,
+		// 	StartDate: time1.String(), EndDate: time2.String(), Id: item.Id, ClassID: int32(clID)}
 		tmp := EventData{Title: item.Summary, Description: item.Description,
-			StartDate: time1.String(), EndDate: time2.String(), Id: item.Id, ClassID: int32(clID)}
+			StartDate: item.Start.DateTime, EndDate: item.End.DateTime, Id: item.Id, ClassID: int32(clID)}
 
 		ans.Events = append(ans.Events, &tmp)
 	}

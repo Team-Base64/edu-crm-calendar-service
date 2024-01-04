@@ -10,6 +10,7 @@ import (
 
 	conf "main/config"
 	ctrl "main/controller"
+	deliv "main/delivery"
 	st "main/repository"
 	us "main/usecase"
 
@@ -31,35 +32,35 @@ var credentialsFile string
 func init() {
 	var exist bool
 
-	// pgUser, exist := os.LookupEnv(conf.PG_USER)
-	// if !exist || len(pgUser) == 0 {
-	// 	log.Fatalln("could not get database host from env")
-	// }
-	// pgPwd, exist := os.LookupEnv(conf.PG_PWD)
-	// if !exist || len(pgPwd) == 0 {
-	// 	log.Fatalln("could not get database password from env")
-	// }
-	// pgHost, exist := os.LookupEnv(conf.PG_HOST)
-	// if !exist || len(pgHost) == 0 {
-	// 	log.Fatalln("could not get database host from env")
-	// }
-	// pgPort, exist := os.LookupEnv(conf.PG_PORT)
-	// if !exist || len(pgPort) == 0 {
-	// 	log.Fatalln("could not get database port from env")
-	// }
-	// pgDB, exist := os.LookupEnv(conf.PG_DB)
-	// if !exist || len(pgDB) == 0 {
-	// 	log.Fatalln("could not get database name from env")
-	// }
-
-	// urlDB = "postgres://" + pgUser + ":" + pgPwd + "@" + pgHost + ":" + pgPort + "/" + pgDB
-
-	urlDBs, exist := os.LookupEnv(conf.URL_DB)
-	if !exist || len(urlDBs) == 0 {
+	pgUser, exist := os.LookupEnv(conf.PG_USER)
+	if !exist || len(pgUser) == 0 {
+		log.Fatalln("could not get database host from env")
+	}
+	pgPwd, exist := os.LookupEnv(conf.PG_PWD)
+	if !exist || len(pgPwd) == 0 {
+		log.Fatalln("could not get database password from env")
+	}
+	pgHost, exist := os.LookupEnv(conf.PG_HOST)
+	if !exist || len(pgHost) == 0 {
+		log.Fatalln("could not get database host from env")
+	}
+	pgPort, exist := os.LookupEnv(conf.PG_PORT)
+	if !exist || len(pgPort) == 0 {
+		log.Fatalln("could not get database port from env")
+	}
+	pgDB, exist := os.LookupEnv(conf.PG_DB)
+	if !exist || len(pgDB) == 0 {
 		log.Fatalln("could not get database name from env")
 	}
 
-	urlDB = urlDBs
+	urlDB = "postgres://" + pgUser + ":" + pgPwd + "@" + pgHost + ":" + pgPort + "/" + pgDB
+
+	// urlDBs, exist := os.LookupEnv(conf.URL_DB)
+	// if !exist || len(urlDBs) == 0 {
+	// 	log.Fatalln("could not get database name from env")
+	// }
+
+	// urlDB = urlDBs
 
 	urlDomain, exist = os.LookupEnv(conf.UrlDomain)
 	if !exist || len(urlDomain) == 0 {
@@ -115,7 +116,10 @@ func main() {
 		),
 	)
 
-	//handler := deliv.NewHandler(Usecase)
+	Handler := deliv.NewHandler(Usecase)
+
+	myRouter.HandleFunc(conf.PathOAuthSetToken, Handler.SetOAUTH2Token).Methods(http.MethodPost, http.MethodOptions)
+	myRouter.HandleFunc(conf.PathOAuthSaveToken, Handler.SaveOAUTH2TokenToFile).Methods(http.MethodGet, http.MethodOptions)
 
 	//myRouter.HandleFunc(conf.PathWS, Handler.ServeWs).Methods(http.MethodGet, http.MethodOptions)
 	myRouter.PathPrefix(conf.PathDocs).Handler(httpSwagger.WrapHandler)

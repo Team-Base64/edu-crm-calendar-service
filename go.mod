@@ -7,6 +7,7 @@ require (
 	github.com/gorilla/mux v1.8.0
 	github.com/jackc/pgx/v5 v5.5.1
 	github.com/swaggo/http-swagger v1.3.4
+	github.com/swaggo/swag v1.16.2
 	google.golang.org/api v0.126.0
 	google.golang.org/grpc v1.59.0
 )
@@ -36,7 +37,6 @@ require (
 	github.com/mailru/easyjson v0.7.6 // indirect
 	github.com/rogpeppe/go-internal v1.11.0 // indirect
 	github.com/swaggo/files v0.0.0-20220610200504-28940afbdbfe // indirect
-	github.com/swaggo/swag v1.16.2 // indirect
 	go.opencensus.io v0.24.0 // indirect
 	golang.org/x/crypto v0.16.0 // indirect
 	golang.org/x/tools v0.7.0 // indirect

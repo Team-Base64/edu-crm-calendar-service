@@ -15,8 +15,10 @@ var URL_DB = "URL_DB"
 var PortGRPCCalendar = ":8083"
 var PortWebCalendar = ":8084"
 
-var BaseUrl = "/apichat"
-var PathWS = BaseUrl + "/ws"
+var BaseUrl = "/api"
+
+var PathOAuthSetToken = BaseUrl + "/oauth"
+var PathOAuthSaveToken = BaseUrl + "/oauth/savetoken"
 
 var PathDocs = BaseUrl + "/docs"
 
