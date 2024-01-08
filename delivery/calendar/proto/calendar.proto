@@ -2,7 +2,7 @@ syntax = "proto3";
 
 // export PATH="$PATH:$(go env GOPATH)/bin"
 // go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
-// protoc --go_out=. --go-grpc_out=. --go-grpc_opt=paths=source_relative --go_opt=paths=source_relative controller/calendar.proto
+// protoc --go_out=. --go-grpc_out=. --go-grpc_opt=paths=source_relative --go_opt=paths=source_relative delivery/calendar/proto/calendar.proto
 
 package calendar;
 option go_package = "./calendar";
@@ -22,17 +22,37 @@ message GetEventsRequestCalendar {
     int32 teacherID = 1;
 }
 
+message CreateEventRequest {
+    string calendarID = 1;
+    EventData event = 2;
+}
+
+message CreateEventResponse {
+    string eventID = 1;
+}
+
+message UpdateEventRequest {
+    string calendarID = 1;
+    EventData event = 2;
+}
+
 message GetEventsResponse {
     repeated EventData events = 1;
 }
 
 message DeleteEventRequest {
     string id = 1;
+    string calendarID = 2;
+}
+
+message CreateCalendarRequest {
+    int32 teacherID = 1;
 }
 
 service CalendarController {
     rpc GetEventsCalendar(GetEventsRequestCalendar) returns (GetEventsResponse);
-    rpc CreateEvent(EventData) returns (Nothing);
-    rpc UpdateEvent(EventData) returns (Nothing);
+    rpc CreateEvent(CreateEventRequest) returns (CreateEventResponse);
+    rpc UpdateEvent(UpdateEventRequest) returns (Nothing);
     rpc DeleteEvent(DeleteEventRequest) returns (Nothing);
+    rpc CreateCalendar(CreateCalendarRequest) returns (Nothing);
 }

@@ -11,6 +11,7 @@ import (
 
 type StoreInterface interface {
 	GetCalendarDB(teacherID int) (*model.CalendarParams, error)
+	CreateCalendarDB(teacherID int, googleID string) (int, error)
 }
 
 type Store struct {
@@ -30,4 +31,13 @@ func (s *Store) GetCalendarDB(teacherID int) (*model.CalendarParams, error) {
 		return nil, e.StacktraceError(err)
 	}
 	return &ans, nil
+}
+
+func (s *Store) CreateCalendarDB(teacherID int, googleID string) (int, error) {
+	id := 1
+	err := s.db.QueryRow(`INSERT INTO calendars (teacherID, idInGoogle) VALUES ($1, $2) RETURNING id;`, teacherID, googleID).Scan(&id)
+	if err != nil {
+		return 0, e.StacktraceError(err)
+	}
+	return id, nil
 }

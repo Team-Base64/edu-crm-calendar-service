@@ -26,6 +26,7 @@ type UsecaseInterface interface {
 	SaveOAUTH2Token(authCode string) error
 	GetCalendarServiceClient() (*calendar.Service, error)
 	GetCalendarDB(teacherID int) (*model.CalendarParams, error)
+	CreateCalendarDB(teacherID int, googleID string) (int, error)
 }
 
 type Usecase struct {
@@ -169,4 +170,8 @@ func (uc *Usecase) GetCalendarServiceClient() (*calendar.Service, error) {
 
 func (uc *Usecase) GetCalendarDB(teacherID int) (*model.CalendarParams, error) {
 	return uc.st.GetCalendarDB(teacherID)
+}
+
+func (uc *Usecase) CreateCalendarDB(teacherID int, googleID string) (int, error) {
+	return uc.st.CreateCalendarDB(teacherID, googleID)
 }
