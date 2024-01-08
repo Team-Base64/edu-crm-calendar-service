@@ -2,10 +2,10 @@ syntax = "proto3";
 
 // export PATH="$PATH:$(go env GOPATH)/bin"
 // go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
-// protoc --go_out=. --go-grpc_out=. --go-grpc_opt=paths=source_relative --go_opt=paths=source_relative controller/ctrl.proto
+// protoc --go_out=. --go-grpc_out=. --go-grpc_opt=paths=source_relative --go_opt=paths=source_relative controller/calendar.proto
 
-package ctrl;
-option go_package = "./ctrl";
+package calendar;
+option go_package = "./calendar";
 
 message Nothing {}
 

@@ -9,8 +9,9 @@ import (
 	"time"
 
 	conf "main/config"
-	ctrl "main/controller"
-	deliv "main/delivery"
+	grpcCalendar "main/delivery/calendar"
+	protoCalendar "main/delivery/calendar/proto"
+	httpHandler "main/delivery/http"
 	st "main/repository"
 	us "main/usecase"
 
@@ -108,20 +109,19 @@ func main() {
 			Timeout: 5 * time.Second,
 		}),
 	)
-	ctrl.RegisterCalendarControllerServer(
+	protoCalendar.RegisterCalendarControllerServer(
 		server,
-		ctrl.NewCtrlService(
+		grpcCalendar.NewCtrlService(
 			Usecase,
 			urlDomain,
 		),
 	)
 
-	Handler := deliv.NewHandler(Usecase)
+	Handler := httpHandler.NewHandler(Usecase)
 
 	myRouter.HandleFunc(conf.PathOAuthSetToken, Handler.SetOAUTH2Token).Methods(http.MethodPost, http.MethodOptions)
 	myRouter.HandleFunc(conf.PathOAuthSaveToken, Handler.SaveOAUTH2TokenToFile).Methods(http.MethodGet, http.MethodOptions)
 
-	//myRouter.HandleFunc(conf.PathWS, Handler.ServeWs).Methods(http.MethodGet, http.MethodOptions)
 	myRouter.PathPrefix(conf.PathDocs).Handler(httpSwagger.WrapHandler)
 
 	log.Println("starting grpc server at " + conf.PortGRPCCalendar)
