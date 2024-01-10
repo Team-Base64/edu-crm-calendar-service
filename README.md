@@ -1,2 +1,2 @@
-# edu-crm-chat-service
-The chat service for a multichat feature
+# edu-crm-calendar-service
+The calendar service for a multichat feature

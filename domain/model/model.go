@@ -11,8 +11,8 @@ type Response struct {
 }
 
 type CalendarParams struct {
-	ID         int    `json:"id"`
-	IDInGoogle string `json:"googleid"`
+	ID            int    `json:"id"`
+	InternalApiID string `json:"googleid"`
 }
 
 type CalendarEvent struct {
